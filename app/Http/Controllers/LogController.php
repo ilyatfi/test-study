@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Profiler\Profile;
-use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
@@ -26,7 +25,8 @@ class LogController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
-        $audit = DB::table('product_audit')
+        $audit = Auth::user()
+            ->logs()
             ->where('created_at', '>=', $startDate)
             ->where('created_at', '<=', $endDate)
             ->get();
