@@ -16,6 +16,9 @@ class Product extends Model
     //
     // > LARAVEL EVENTS
     // > VS CODE SHOTCUTS/HOTKEYS
+    // > JSON VIEW
+    // > PaginateRequest
+    // > ? Where does controller call to perform logic
 
     public function totalPriceWithVat()
     {        
