@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\User;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,37 +26,22 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Validation
-        $products = $request->validate([
+        $product = $request->validate([
             'item_name' => ['required'],
             'quantity' => ['required', 'integer'],
             'price' => ['required', 'decimal:2'],
         ]);
         // Adding to database
-        $product = Product::create($products);
+        $product = Product::create($product);
 
-        // Audit table
-        DB::insert('insert into product_audit (user_id, product_id, action, created_at)  values (?, ?, ?, ?)', [Auth::user()->id, $product->id, 'Created', now()]);
-
-        return redirect('/products');
-    }
-
-    public function audit(Request $request)
-    {
-        // Validation
-        $request->validate([
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date'],
+        // Adding to product_audit
+        $product->logs()->create([
+            'user_id' => Auth::user()->id,
+            'action' => 'Created',
+            'created_at' => now()
         ]);
 
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-
-        $audit = DB::table('product_audit')
-            ->where('created_at', '>=', $startDate)
-            ->where('created_at', '<=', $endDate)
-            ->get();
-  
-        return response()->json($audit);
+        return redirect('/products');
     }
 
     public function show(Product $product)
@@ -69,10 +54,10 @@ class ProductController extends Controller
         return view('products.edit', ['product' => $product]);
     }
 
-    public function update(Product $product)
+    public function update(Request $request, Product $product)
     {
         // Validation
-        request()->validate([
+        $request->validate([
             'item_name' => ['required'],
             'quantity' => ['required', 'integer'],
             'price' => ['required', 'decimal:2'],
@@ -84,8 +69,12 @@ class ProductController extends Controller
             'price' => request('price'),
         ]);
         
-        // Audit table
-        DB::insert('insert into product_audit (user_id, product_id, action, created_at)  values (?, ?, ?, ?)', [Auth::user()->id, $product->id, 'Updated', now()]);
+        // Adding to product_audit
+        $product->logs()->create([
+            'user_id' => Auth::user()->id,
+            'action' => 'Updated',
+            'created_at' => now()
+        ]);
 
         return redirect('/products');
     }
@@ -94,8 +83,12 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        // Audit table
-        DB::insert('insert into product_audit (user_id, product_id, action, created_at)  values (?, ?, ?, ?)', [Auth::user()->id, $product->id, 'Deleted', now()]);
+        // Adding to product_audit
+        $product->logs()->create([
+            'user_id' => Auth::user()->id,
+            'action' => 'Deleted',
+            'created_at' => now()
+        ]);
 
         return redirect('/products');
     }

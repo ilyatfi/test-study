@@ -1,5 +1,5 @@
 <x-layout>
-    <x-page-heading>Products</x-page-heading>
+    <x-page-heading>Product</x-page-heading>
 
     <table class="text-center mx-auto border border-black">
         <tr class="bg-gray-500/20">

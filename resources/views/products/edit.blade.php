@@ -21,6 +21,7 @@
     <form class="text-center mt-2" action="/products/{{$product->id}}" method="POST">
         @csrf
         @method('DELETE')
+
         <x-button color="red">Delete Item</x-button>
     </form>
 </x-layout>
