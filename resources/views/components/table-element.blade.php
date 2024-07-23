@@ -1,0 +1,1 @@
+<th {{ $attributes(['class'=>'px-10 border border-black']) }} >{{ $slot }}</th>

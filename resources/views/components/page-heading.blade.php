@@ -1,0 +1,1 @@
+<h3 class="font-bold text-lg mx-auto text-center my-10">{{$slot}}</h3>
