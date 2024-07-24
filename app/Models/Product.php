@@ -12,13 +12,9 @@ class Product extends Model
 
     protected $guarded = [];
 
-    // learn:
+    // todo:
     //
     // > LARAVEL EVENTS
-    // > VS CODE SHOTCUTS/HOTKEYS
-    // > JSON VIEW
-    // > PaginateRequest
-    // > ? Where does controller call to perform logic
 
     public function totalPriceWithVat()
     {        

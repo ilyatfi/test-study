@@ -2,36 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
-    /**
-     * Show the form for creating the resource.
-     */
+    private SessionService $sessionService;
+
+    public function __construct(SessionService $sessionService)
+    {
+        $this->sessionService = $sessionService;
+    }
+
     public function create()
     {
         return view('auth.login');
     }
 
-    /**
-     * Store the newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        // Validation
-        $credentials = $request->validate([
-            'name' => ['required'],
-            'password' => ['required'],
-        ]);
-        
-        // Checking if there is such user
-        if (! Auth::attempt($credentials))
-        {
-            return back()->withErrors(['The provided credentials do not match our records.']);
-        }
-
+        $this->sessionService->store($request->validated());
+     
         // Changing session token
         $request->session()->regenerate();
 

@@ -2,46 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreNewUserRequest;
+use App\Services\RegisterService;
 
 class RegisterController extends Controller
 {
-    /**
-     * Show the form for creating the resource.
-     */
+    private RegisterService $registerService;
+
+    public function __construct(RegisterService $registerService)
+    {
+        $this->registerService = $registerService;
+    }
+
     public function create()
     {
         return view('auth.register');
     }
 
-    /**
-     * Store the newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreNewUserRequest $request)
     {
-        // Validation
-        $user = $request->validate([
-            'name' => ['required'],
-            'password' => ['required','confirmed'],
-            'password_confirmation' => ['required'],
-            'role' => ['nullable'],
-        ]);
-
-        if($request->has('role')) {
-            $user['role'] = 'admin';
-        }
-        else {
-            
-            $user['role'] = 'user';
-        }
-        
-        // Adding to database
-        $user = User::create($user);
-        
-        // Authenticating
-        Auth::login($user);
+        $this->registerService->store($request->validated());
 
         return redirect('/products');
     }

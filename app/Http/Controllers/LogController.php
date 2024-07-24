@@ -2,35 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Profiler\Profile;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ShowAuditRequest;
+use App\Services\LogService;
 
 class LogController extends Controller
 {
+    private LogService $logService;
+
+    public function __construct(LogService $logService)
+    {
+        $this->logService = $logService;
+    }
+
     public function index()
     {
         return view('audit.index');
     }
 
-    public function send_api(Request $request)
+    public function send_api(ShowAuditRequest $request)
     {
-        // Validation
-        $request->validate([
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date'],
-        ]);
+        $logs = $this->logService->send_api($request->validated());
 
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-
-        $audit = Auth::user()
-            ->logs()
-            ->where('created_at', '>=', $startDate)
-            ->where('created_at', '<=', $endDate)
-            ->get();
-        
-        return response()->json($audit);
+        return view('audit.results', ['logs' => $logs]);
     }
 }
