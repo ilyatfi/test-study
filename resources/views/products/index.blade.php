@@ -26,6 +26,9 @@
             </tr>
         @endforeach
     </table>
+    <div class="w-2/5 mt-6">
+        {{ $products->links() }}
+    </div>
     @can('manipulate-products')
         <div class="flex justify-center my-10">
             <x-link href="/products/create">Create Product</x-link>
