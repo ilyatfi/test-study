@@ -14,15 +14,17 @@ class LogController extends Controller
         $this->logService = $logService;
     }
 
-    public function index()
+    public function index(ShowAuditRequest $request)
     {
-        return view('audit.index');
+        $logs = $this->logService->index($request->validated());
+
+        return view('audit.index', ['logs' => $logs]);
     }
 
-    public function send_api(ShowAuditRequest $request)
+    public function api_index(ShowAuditRequest $request)
     {
-        $logs = $this->logService->send_api($request->validated());
+        $logs = $this->logService->index($request->validated());
 
-        return view('audit.results', ['logs' => $logs]);
+        return response(json_encode($logs, JSON_PRETTY_PRINT))->header('Content-Type', 'text/plain');
     }
 }

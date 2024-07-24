@@ -5,7 +5,6 @@ use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
-use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +19,7 @@ Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth'
 
 Route::get('/products', [ProductController::class, 'index'])->middleware('auth');
 Route::get('/products/audit', [LogController::class, 'index'])->middleware('auth')->can('manipulate-products');
-Route::get('/api/products/audit', [LogController::class, 'send_api'])->middleware('auth')->can('manipulate-products');
+Route::get('/api/products/audit', [LogController::class, 'api_index'])->middleware('auth')->can('manipulate-products');
 
 Route::get('/products/create', [ProductController::class, 'create'])->middleware('auth')->can('manipulate-products');
 Route::post('/products', [ProductController::class, 'store'])->middleware('auth')->can('manipulate-products');

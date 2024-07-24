@@ -11,7 +11,9 @@
     <div class="px-20">
         <nav class="flex justify-end gap-x-4 child:items-center py-3">
             @auth
-                <x-link href="/products/audit">Show Audit</x-link>
+                @can('manipulate-products')
+                    <x-link href="/products/audit?start_date={{ date('Y-m-d') }}&end_date={{ date('Y-m-d') }}">Show Audit</x-link>
+                @endcan
                 <x-link href="/products">Products</x-link>
                 <form action="/logout" method="POST">
                     @csrf
