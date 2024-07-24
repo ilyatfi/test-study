@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UserCreated;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,10 +18,12 @@ class RegisterService
             $user['role'] = 'user';
         }
         
+        event(new UserCreated($user));
+        
         // Adding to database
-        $user = User::create($user);
+        // $user = User::create($user);
         
         // Authenticating
-        Auth::login($user);
+        // Auth::login($user);
     }
 }

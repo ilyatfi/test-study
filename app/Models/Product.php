@@ -12,10 +12,6 @@ class Product extends Model
 
     protected $guarded = [];
 
-    // todo:
-    //
-    // > LARAVEL EVENTS
-
     public function totalPriceWithVat()
     {        
         $quantity = (float) $this->quantity;
