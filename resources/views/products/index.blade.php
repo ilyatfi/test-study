@@ -2,7 +2,7 @@
     <x-page-heading>Products</x-page-heading>
 
     <table class="text-center mx-auto border border-black">
-        <tr class="bg-gray-500/20">
+        <tr class="bg-gray-500/20 ">
             <x-table-element>#</x-table-element>
             <x-table-element>Title</x-table-element>
             <x-table-element>Quantity</x-table-element>
@@ -26,9 +26,10 @@
             </tr>
         @endforeach
     </table>
-    <div class="w-2/5 mt-6">
+    <div class="w-2/5 px-20 mt-6">
         {{ $products->links() }}
     </div>
+
     @can('manipulate-products')
         <div class="flex justify-center my-10">
             <x-link href="/products/create">Create Product</x-link>

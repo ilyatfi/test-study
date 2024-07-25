@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class SessionService
 {
@@ -10,8 +11,8 @@ class SessionService
     {
         // Checking if there is such user
         if (! Auth::attempt($credentials))
-        {
-            return back()->withErrors(['The provided credentials do not match our records.']);
+        {            
+            throw ValidationException::withMessages(['Sorry, those credentials do not match.']);
         }
     }
 }

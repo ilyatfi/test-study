@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider

@@ -19,11 +19,5 @@ class RegisterService
         }
         
         event(new UserCreated($user));
-        
-        // Adding to database
-        // $user = User::create($user);
-        
-        // Authenticating
-        // Auth::login($user);
     }
 }

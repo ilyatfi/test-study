@@ -14,7 +14,7 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+    
     protected $dispatchesEvents = [
         'created' => ProductCreated::class,
         'updated' => ProductUpdated::class,

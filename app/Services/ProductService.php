@@ -9,7 +9,7 @@ class ProductService
 {
     public function index()
     {
-        $products = Product::with('logs')->latest()->simplePaginate(5);
+        $products = Product::latest()->simplePaginate(5);
 
         return $products;
     }
